@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather Prediction</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 20px;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+        }
+        form {
+            max-width: 600px;
+            margin: auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 5px;
+        }
+        input[type="text"], input[type="number"] {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        input[type="submit"] {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+        .error-message {
+            color: red;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+    </style>
+    <script>
+        function validateForm() {
+            var temperature = parseFloat(document.getElementById('temperature').value);
+            var dew = parseFloat(document.getElementById('dew').value);
+            var humidity = parseFloat(document.getElementById('humidity').value);
+            var wind_speed = parseFloat(document.getElementById('wind_speed').value);
+            var visibility_km = parseFloat(document.getElementById('visibility_km').value);
+            var pressure = parseFloat(document.getElementById('pressure').value);
+
+            var valid = true;
+            var errorMessage = "";
+
+            // Check temperature
+            if (temperature < -23 || temperature > 33) {
+                errorMessage += "Temperature must be between -23°C and 33°C.<br>";
+                valid = false;
+            }
+
+            // Check dew
+            if (dew < -28 || dew > 25) {
+                errorMessage += "Dew must be between -28 and 25.<br>";
+                valid = false;
+            }
+
+            // Check humidity
+            if (humidity < 18 || humidity > 100) {
+                errorMessage += "Humidity must be between 18% and 100%.<br>";
+                valid = false;
+            }
+
+            // Check wind speed
+            if (wind_speed < 0 || wind_speed > 83) {
+                errorMessage += "Wind Speed must be between 0 km/h and 83 km/h.<br>";
+                valid = false;
+            }
+
+            // Check visibility_km
+            if (visibility_km < 0 || visibility_km > 49) {
+                errorMessage += "Visibility must be between 0 km and 49 km.<br>";
+                valid = false;
+            }
+
+            // Check pressure
+            if (pressure < 97 || pressure > 103) {
+                errorMessage += "Pressure must be between 97 hPa and 103 hPa.<br>";
+                valid = false;
+            }
+
+            // Display error message if validation fails
+            if (!valid) {
+                document.getElementById('error-message').innerHTML = errorMessage;
+            } else {
+                document.getElementById('error-message').innerHTML = ""; // Clear error message
+            }
+
+            return valid;
+        }
+    </script>
+</head>
+<body>
+    <h1>Weather Prediction</h1>
+    <form action="/predict" method="post" onsubmit="return validateForm()">
+        <div class="form-group">
+            <label for="temperature">Temperature (°C):</label>
+            <input type="number" id="temperature" name="temperature" step="any" min="-23" max="33" required>
+        </div>
+        <div class="form-group">
+            <label for="dew">Dew:</label>
+            <input type="number" id="dew" name="dew" step="any" min="-28" max="25" required>
+        </div>
+        <div class="form-group">
+            <label for="humidity">Humidity (%):</label>
+            <input type="number" id="humidity" name="humidity" min="18" max="100" required>
+        </div>
+        <div class="form-group">
+            <label for="wind_speed">Wind Speed (km/h):</label>
+            <input type="number" id="wind_speed" name="wind_speed" step="any" min="0" max="83" required>
+        </div>
+        <div class="form-group">
+            <label for="visibility_km">Visibility (km):</label>
+            <input type="number" id="visibility_km" name="visibility_km" step="any" min="0" max="49" required>
+        </div>
+        <div class="form-group">
+            <label for="pressure">Pressure:</label>
+            <input type="number" id="pressure" name="pressure" step="any" min="97" max="103" required>
+        </div>
+        <div class="form-group">
+            <input type="submit" value="Predict Weather">
+        </div>
+        <div id="error-message" class="error-message"></div>
+    </form>
+</body>
+</html>
